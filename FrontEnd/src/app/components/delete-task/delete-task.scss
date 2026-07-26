@@ -1,0 +1,31 @@
+.custom-header, .custom-content {
+  margin: 0 !important;
+  padding: 20px 24px !important;
+
+}
+
+.custom-actions {
+ justify-content: space-around
+}
+
+.btn-cancel, .btn-delete {
+  padding: 10px 24px !important;
+  border: none;    
+  border-radius: 50px !important;
+  color: #ffffff !important;
+
+  &:hover {
+    transform: translateY(-2px); 
+    opacity: 0.9;
+  }
+}
+
+.btn-cancel {
+  background-color: #434e50 !important;
+  &:hover { background-color: #505253 !important; }
+}
+
+.btn-delete {
+  background-color: #f83434 !important;
+  &:hover { background-color: #f0533f !important; }
+}

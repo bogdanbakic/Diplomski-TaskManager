@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>{{ dialogTitle() }}</h2>
+
+<form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+  <mat-dialog-content class="layout">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+      @if (taskForm.get('name')?.invalid && taskForm.get('name')?.touched) {
+      <mat-error>Name is mandatory (Min 3 chars)</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      @if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+      <mat-error>Description is mandatory (Min 3 chars)</mat-error>
+      }
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 2;">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="pickerStart" [min]="minDate" formControlName="startDate">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Start time</mat-label>
+        <input matInput [matTimepicker]="timeStart" formControlName="startTime">
+        <mat-timepicker-toggle matIconSuffix [for]="timeStart"></mat-timepicker-toggle>
+        <mat-timepicker #timeStart></mat-timepicker>
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 2;">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="pickerEnd" [min]="taskForm.get('startDate')?.value || minDate"
+          formControlName="endDate">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>End time</mat-label>
+        <input matInput [matTimepicker]="timeEnd" formControlName="endTime">
+        <mat-timepicker-toggle matIconSuffix [for]="timeEnd"></mat-timepicker-toggle>
+        <mat-timepicker #timeEnd></mat-timepicker>
+      </mat-form-field>
+
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

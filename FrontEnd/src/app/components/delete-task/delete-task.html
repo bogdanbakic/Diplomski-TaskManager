@@ -1,0 +1,12 @@
+<h2 mat-dialog-title class="custom-header">
+    Delete confirmation
+</h2>
+
+<mat-dialog-content class="custom-content">
+    <span>Are you sure you want to delete {{ model().name}} ?</span>
+</mat-dialog-content>
+
+<mat-dialog-actions  class="custom-actions">
+    <button mat-button mat-dialog-close class="btn-cancel" (click)="closeDelete()">Cancel</button>
+    <button mat-raised-button class="btn-delete" (click)="confirmDelete()">Delete</button>
+</mat-dialog-actions>
