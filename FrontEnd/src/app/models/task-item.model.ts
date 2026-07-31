@@ -1,10 +1,12 @@
-import { TaskItemStatus } from "./task-item-status";
+import { TaskItemStatus } from './task-item-status';
 
 export interface TaskItem {
   id: number | null;
-  name: string | null;
-  status: TaskItemStatus | null; 
-  description: string | null;
-  startDate: Date | null;
-  endDate: Date | null;
+  name: string;
+  description: string;
+  status: TaskItemStatus;
+  startDate: Date;
+  endDate: Date;
+  assignedToUserId: string | null;
+  createdByUserId?: string;
 }

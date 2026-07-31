@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } fro
 import { TaskService } from '../../services/task-service';
 import { TaskItem } from '../../models/task-item.model';
 import { NotificationService } from '../../services/notification-service';
+import { TaskItemStatus } from '../../models/task-item-status';
 
 @Component({
   selector: 'app-delete-task',
@@ -20,10 +21,11 @@ export class DeleteTask {
   model = signal<TaskItem>({
     id: this.data?.id ?? 0,
     name: this.data?.name ?? '',
-    status: this.data?.status ?? '',
+    status: this.data?.status ?? TaskItemStatus.ToDo,
     description: this.data?.description ?? '',
     startDate: this.data?.startDate ?? new Date(),
     endDate: this.data?.endDate ?? new Date(),
+    assignedToUserId: this.data?.assignedToUserId ?? null,
   });
 
   closeDelete() {

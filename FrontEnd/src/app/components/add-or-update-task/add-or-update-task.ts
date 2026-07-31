@@ -15,6 +15,8 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationService } from '../../services/notification-service';
 import { TaskItemStatus } from '../../models/task-item-status';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { UserService } from '../../services/user-service';
 
 
 @Component({
@@ -32,6 +34,7 @@ import { TaskItemStatus } from '../../models/task-item-status';
 
 export class AddOrUpdateTask {
   private readonly taskService = inject(TaskService);
+  private readonly userService = inject(UserService);
   private dialogRef = inject(MatDialogRef<AddOrUpdateTask>, { optional: true });
   private readonly notificationService = inject(NotificationService);
   private readonly fb = inject(FormBuilder);
@@ -39,6 +42,11 @@ export class AddOrUpdateTask {
 
   data = inject(MAT_DIALOG_DATA, { optional: true });
   minDate = new Date();
+
+  usersResource = rxResource({
+    stream: () => this.userService.getAll(),
+    defaultValue: []
+  });
 
   taskForm = this.fb.group({
     id: [null as number | null],
@@ -48,7 +56,8 @@ export class AddOrUpdateTask {
     startDate: [new Date(), Validators.required],
     startTime: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
-    endTime: [new Date(), Validators.required]
+    endTime: [new Date(), Validators.required],
+    assignedToUserId: [null as string | null]
   });
 
   ngOnInit() {
@@ -63,7 +72,8 @@ export class AddOrUpdateTask {
         startDate: this.data.startDate,
         startTime: start,
         endDate: this.data.endDate,
-        endTime: end
+        endTime: end,
+        assignedToUserId: this.data.assignedToUserId ?? null
       })
     }
     if (this.data?.status === TaskItemStatus.Done) {
@@ -80,13 +90,14 @@ export class AddOrUpdateTask {
     const rawValue = this.taskForm.getRawValue();
 
     const taskPayload: TaskItem = {
-      id: rawValue.id ? rawValue.id : null,
-      name: rawValue.name ?? '',
-      description: rawValue.description ?? '',
-      status: rawValue.status ?? TaskItemStatus.ToDo,
-      startDate: this.combineDateAndTime(rawValue.startDate!, rawValue.startTime!),
-      endDate: this.combineDateAndTime(rawValue.endDate!, rawValue.endTime!)
-    };
+  id: rawValue.id ? rawValue.id : null,
+  name: rawValue.name ?? '',
+  description: rawValue.description ?? '',
+  status: rawValue.status ?? TaskItemStatus.ToDo,
+  startDate: this.combineDateAndTime(rawValue.startDate!, rawValue.startTime!)!,
+  endDate: this.combineDateAndTime(rawValue.endDate!, rawValue.endTime!)!,
+  assignedToUserId: rawValue.assignedToUserId ?? null
+};
 
     const request$ = this.data?.id
       ? this.taskService.updateTask(this.data.id, taskPayload)
@@ -110,4 +121,3 @@ export class AddOrUpdateTask {
     return combined;
   }
 }
-

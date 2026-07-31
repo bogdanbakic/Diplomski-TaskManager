@@ -2,9 +2,10 @@ import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { authInterceptor } from './interceptors/auth-interceptor';
 
 registerLocaleData(localeFr);
 
@@ -16,6 +17,6 @@ export const appConfig: ApplicationConfig = {
       provide: LOCALE_ID,
       useValue: navigator.language.split('-')[0]
     },
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ]
 };

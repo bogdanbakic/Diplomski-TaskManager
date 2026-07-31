@@ -19,6 +19,16 @@
       }
     </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Assign to</mat-label>
+      <mat-select formControlName="assignedToUserId">
+        <mat-option [value]="null">Unassigned</mat-option>
+        @for (user of usersResource.value(); track user.id) {
+        <mat-option [value]="user.id">{{ user.fullName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
     <div style="display: flex; gap: 10px;">
       <mat-form-field appearance="outline" style="flex: 2;">
         <mat-label>Start Date</mat-label>

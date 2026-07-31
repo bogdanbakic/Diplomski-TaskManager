@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
 import { TaskItem } from '../../models/task-item.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { TaskService } from '../../services/task-service';
@@ -19,6 +19,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSelectModule } from "@angular/material/select";
 import { TaskItemStatus } from '../../models/task-item-status';
 import { NotificationService } from '../../services/notification-service';
+import { AuthService } from '../../services/auth-service';
+import { UserService } from '../../services/user-service';
 
 
 @Component({
@@ -38,6 +40,8 @@ export class TaskListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly taskService = inject(TaskService);
   private readonly notificationService = inject(NotificationService);
+  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
   private dialog = inject(MatDialog);
   public TaskItemStatus = TaskItemStatus;
 
@@ -45,12 +49,28 @@ export class TaskListComponent {
   statusList = Object.values(TaskItemStatus);
 
   selectedStatus = signal<TaskItemStatus>(TaskItemStatus.All);
-  displayedColumns: string[] = ['name', 'description', 'status', 'start-date', 'end-date', 'actions'];
+  displayedColumns: string[] = ['name', 'description', 'status', 'start-date', 'end-date', 'assigned-to', 'actions'];
+
+  usersResource = rxResource({
+    stream: () => this.userService.getAll(),
+    defaultValue: []
+  });
 
   taskResource = rxResource({
     stream: () => this.taskService.getAll(this.selectedStatus() == TaskItemStatus.All ? undefined : this.selectedStatus()),
     defaultValue: []
   });
+
+  getAssignedUserName(userId: string | null): string {
+    if (!userId) return '-';
+    const user = this.usersResource.value().find(u => u.id === userId);
+    return user ? user.fullName : '-';
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   addTask() {
     this.router.navigate(['add-task'], { relativeTo: this.route });
@@ -97,7 +117,8 @@ export class TaskListComponent {
       description: row.description,
       status: TaskItemStatus.Done,
       startDate: row.startDate,
-      endDate: row.endDate
+      endDate: row.endDate,
+      assignedToUserId: row.assignedToUserId
     };
 
     this.taskService.updateTask(row.id, payload).subscribe({

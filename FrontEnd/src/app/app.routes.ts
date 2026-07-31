@@ -2,11 +2,23 @@ import { Routes } from '@angular/router';
 import { AddOrUpdateTask } from './components/add-or-update-task/add-or-update-task';
 import { DeleteTask } from './components/delete-task/delete-task';
 import { TaskListComponent } from './components/task-list/task-list';
+import { Login } from './components/login/login';
+import { authGuard } from './guards/auth-guard';
+import { Register } from './components/register/register';
 
 export const routes: Routes = [
     {
+        path: 'login',
+        component: Login
+    },
+    {
+        path: 'register',
+        component: Register
+    },
+    {
         path: 'task-list',
         component: TaskListComponent,
+        canActivate: [authGuard],
         children: [
             { path: 'add-task', component: AddOrUpdateTask },
             { path: 'edit-task/:id', component: AddOrUpdateTask },
@@ -14,7 +26,11 @@ export const routes: Routes = [
         ]
     },
     {
-        path: '**' , redirectTo:'/task-list'
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+    },
+    {
+        path: '**', redirectTo: '/login'
     }
 ];
-
