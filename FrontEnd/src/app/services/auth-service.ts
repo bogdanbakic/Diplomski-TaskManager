@@ -1,3 +1,4 @@
+// src/app/services/auth-service.ts
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -26,13 +27,15 @@ interface DecodedToken {
   exp: number;
 }
 
+const TOKEN_KEY = 'auth_token';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/Auth`;
 
-  private tokenSignal = signal<string | null>(null);
+  private tokenSignal = signal<string | null>(sessionStorage.getItem(TOKEN_KEY));
 
   isLoggedIn = computed(() => !!this.tokenSignal());
   currentUserId = computed(() => this.decodedToken()?.nameid ?? null);
@@ -51,11 +54,15 @@ export class AuthService {
 
   login(dto: LoginDto): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, dto).pipe(
-      tap((response) => this.tokenSignal.set(response.token))
+      tap((response) => {
+        sessionStorage.setItem(TOKEN_KEY, response.token);
+        this.tokenSignal.set(response.token);
+      })
     );
   }
 
   logout(): void {
+    sessionStorage.removeItem(TOKEN_KEY);
     this.tokenSignal.set(null);
   }
 

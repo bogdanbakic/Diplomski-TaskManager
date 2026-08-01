@@ -1,0 +1,48 @@
+    @if (dashboardData(); as data) {
+<div class="dashboard-container">
+
+  <div class="stat-cards">
+    <mat-card class="stat-card">
+      <div class="stat-number">{{ data.totalActiveCount }}</div>
+      <div class="stat-label">Aktivni zadaci</div>
+    </mat-card>
+
+    <mat-card class="stat-card" [class.overdue]="data.overdueCount > 0">
+      <div class="stat-number">{{ data.overdueCount }}</div>
+      <div class="stat-label">Zakasneli zadaci</div>
+    </mat-card>
+
+    @if (isAdmin() && data.totalUsersCount !== null) {
+    <mat-card class="stat-card">
+      <div class="stat-number">{{ data.totalUsersCount }}</div>
+      <div class="stat-label">Korisnika u sistemu</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-number">{{ data.totalTasksInSystemCount }}</div>
+      <div class="stat-label">Ukupno zadataka</div>
+    </mat-card>
+    }
+  </div>
+
+  <div class="charts-row">
+    <mat-card class="chart-card">
+      <h3>Zadaci po statusu</h3>
+      <canvas baseChart [data]="statusChartData()" [options]="statusChartOptions" type="pie"></canvas>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <h3>Kreirao vs. Dodeljeno</h3>
+      <canvas baseChart [data]="ownershipChartData()" [options]="ownershipChartOptions" type="bar"></canvas>
+    </mat-card>
+  </div>
+
+  @if (isAdmin() && data.tasksByUser) {
+  <mat-card class="chart-card full-width">
+    <h3>Zadaci po korisniku</h3>
+    <canvas baseChart [data]="usersChartData()" [options]="usersChartOptions" type="bar"></canvas>
+  </mat-card>
+  }
+
+</div>
+}

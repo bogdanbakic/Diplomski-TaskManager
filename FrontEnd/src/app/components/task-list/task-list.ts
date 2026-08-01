@@ -21,6 +21,8 @@ import { TaskItemStatus } from '../../models/task-item-status';
 import { NotificationService } from '../../services/notification-service';
 import { AuthService } from '../../services/auth-service';
 import { UserService } from '../../services/user-service';
+import { Dashboard } from '../dashboard/dashboard';
+import { DashboardService } from '../../services/dashboard-service';
 
 
 @Component({
@@ -29,7 +31,7 @@ import { UserService } from '../../services/user-service';
   providers: [provideNativeDateAdapter()],
   imports: [CommonModule, MatTableModule,
     MatDialogModule, MatIconModule, MatRadioModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink],
+    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink, Dashboard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
@@ -42,6 +44,7 @@ export class TaskListComponent {
   private readonly notificationService = inject(NotificationService);
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
+  private readonly dashboardService = inject(DashboardService);
   private dialog = inject(MatDialog);
   public TaskItemStatus = TaskItemStatus;
 
@@ -73,62 +76,67 @@ export class TaskListComponent {
   }
 
   addTask() {
-    this.router.navigate(['add-task'], { relativeTo: this.route });
-    const dialogRef = this.dialog.open(AddOrUpdateTask, {
-      panelClass: 'add-or-update-task.scss',
-      data: null,
-    });
+  this.router.navigate(['add-task'], { relativeTo: this.route });
+  const dialogRef = this.dialog.open(AddOrUpdateTask, {
+    panelClass: 'add-or-update-task.scss',
+    data: null,
+  });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['./'], { relativeTo: this.route });
-      this.taskResource.reload();
-    });
+  dialogRef.afterClosed().subscribe(() => {
+    this.router.navigate(['./'], { relativeTo: this.route });
+    this.taskResource.reload();
+    this.dashboardService.refresh();
+  });
+}
+
+editTask(task: any) {
+  if (task?.id) {
+    this.router.navigate(['edit-task', task.id], { relativeTo: this.route });
   }
+  const dialogRef = this.dialog.open(AddOrUpdateTask, {
+    data: task
+  });
+  dialogRef.afterClosed().subscribe(() => {
+    this.router.navigate(['./'], { relativeTo: this.route });
+    this.taskResource.reload();
+    this.dashboardService.refresh();
+  });
+}
 
-  editTask(task: any) {
-    if (task?.id) {
-      this.router.navigate(['edit-task', task.id], { relativeTo: this.route });
+deleteTask(task: TaskItem) {
+  this.router.navigate(['delete-task', task.id], { relativeTo: this.route });
+  const dialogRef = this.dialog.open(DeleteTask, {
+    data: task
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.router.navigate(['./'], { relativeTo: this.route });
+    if (result) {
+      this.taskResource.reload();
+      this.dashboardService.refresh();
     }
-    const dialogRef = this.dialog.open(AddOrUpdateTask, {
-      data: task
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['./'], { relativeTo: this.route });
+  });
+}
+
+markAsDone(row: any) {
+  const payload = {
+    name: row.name,
+    description: row.description,
+    status: TaskItemStatus.Done,
+    startDate: row.startDate,
+    endDate: row.endDate,
+    assignedToUserId: row.assignedToUserId
+  };
+
+  this.taskService.updateTask(row.id, payload).subscribe({
+    next: () => {
+      this.notificationService.success('Task done!');
       this.taskResource.reload();
-    });
-  }
-
-  deleteTask(task: TaskItem) {
-    this.router.navigate(['delete-task', task.id], { relativeTo: this.route });
-    const dialogRef = this.dialog.open(DeleteTask, {
-      data: task
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['./'], { relativeTo: this.route });
-      if (result)
-        this.taskResource.reload();
-    });
-  }
-
-  markAsDone(row: any) {
-    const payload = {
-      name: row.name,
-      description: row.description,
-      status: TaskItemStatus.Done,
-      startDate: row.startDate,
-      endDate: row.endDate,
-      assignedToUserId: row.assignedToUserId
-    };
-
-    this.taskService.updateTask(row.id, payload).subscribe({
-      next: () => {
-        this.notificationService.success('Task done!');
-        this.taskResource.reload();
-      },
-      error: (err: any) => console.error('Error while updating status: ', err)
-    });
-  }
+      this.dashboardService.refresh();
+    },
+    error: (err: any) => console.error('Error while updating status: ', err)
+  });
+}
 
   onStatusChange(newStatus: any) {
     this.selectedStatus.set(newStatus);
