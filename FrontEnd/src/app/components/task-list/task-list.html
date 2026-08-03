@@ -20,6 +20,11 @@
             <button mat-icon-button (click)="logout()" [matTooltip]="'Logout'">
                 <mat-icon>logout</mat-icon>
             </button>
+            @if (isAdmin()) {
+            <button mat-icon-button routerLink="/user-management" [matTooltip]="'Manage Users'">
+                <mat-icon>manage_accounts</mat-icon>
+            </button>
+}
 
         </div>
     </div>

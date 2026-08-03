@@ -8,6 +8,7 @@ export interface UserDto {
   id: string;
   fullName: string;
   email: string;
+  roles: string[];
 }
 
 @Injectable({
@@ -20,5 +21,9 @@ export class UserService {
 
   getAll(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(this.apiUrl);
+  }
+
+  updateRole(userId: string, role: string): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiUrl}/${userId}/role`, { role });
   }
 }

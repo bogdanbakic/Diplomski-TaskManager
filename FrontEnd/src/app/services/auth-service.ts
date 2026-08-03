@@ -19,11 +19,11 @@ interface AuthResponse {
   token: string;
 }
 
+const CLAIM_NAMEID = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
+const CLAIM_ROLE = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+
 interface DecodedToken {
-  nameid: string;
-  email: string;
-  unique_name: string;
-  role: string | string[];
+  [key: string]: any;
   exp: number;
 }
 
@@ -38,9 +38,9 @@ export class AuthService {
   private tokenSignal = signal<string | null>(sessionStorage.getItem(TOKEN_KEY));
 
   isLoggedIn = computed(() => !!this.tokenSignal());
-  currentUserId = computed(() => this.decodedToken()?.nameid ?? null);
+  currentUserId = computed(() => this.decodedToken()?.[CLAIM_NAMEID] ?? null);
   currentUserRoles = computed(() => {
-    const roles = this.decodedToken()?.role;
+    const roles = this.decodedToken()?.[CLAIM_ROLE];
     if (!roles) return [];
     return Array.isArray(roles) ? roles : [roles];
   });

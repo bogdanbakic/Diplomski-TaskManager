@@ -47,6 +47,7 @@ export class TaskListComponent {
   private readonly dashboardService = inject(DashboardService);
   private dialog = inject(MatDialog);
   public TaskItemStatus = TaskItemStatus;
+  isAdmin = this.authService.isAdmin;
 
   StatusEnum = TaskItemStatus;
   statusList = Object.values(TaskItemStatus);

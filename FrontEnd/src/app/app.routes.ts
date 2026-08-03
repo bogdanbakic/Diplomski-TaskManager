@@ -5,6 +5,7 @@ import { TaskListComponent } from './components/task-list/task-list';
 import { Login } from './components/login/login';
 import { authGuard } from './guards/auth-guard';
 import { Register } from './components/register/register';
+import { UserManagement } from './components/user-management/user-management';
 
 export const routes: Routes = [
     {
@@ -24,6 +25,11 @@ export const routes: Routes = [
             { path: 'edit-task/:id', component: AddOrUpdateTask },
             { path: 'delete-task/:id', component: DeleteTask }
         ]
+    },
+    {
+        path: 'user-management',
+        component: UserManagement,
+        canActivate: [authGuard]
     },
     {
         path: '',
