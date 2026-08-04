@@ -1,0 +1,31 @@
+<mat-card class="calendar-card">
+
+  <div class="time-row">{{ now() | date: 'HH:mm:ss' }}</div>
+
+  <div class="header-row">
+    <button mat-icon-button (click)="previousMonth()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <span class="month-label" (click)="goToToday()">{{ monthYearLabel() }}</span>
+
+    <button mat-icon-button (click)="nextMonth()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="weekday-row">
+    @for (wd of weekDays; track wd) {
+    <span class="weekday-cell">{{ wd }}</span>
+    }
+  </div>
+
+  <div class="days-grid">
+    @for (day of days(); track day.fullDate.getTime()) {
+    <span class="day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
+      {{ day.date }}
+    </span>
+    }
+  </div>
+
+</mat-card>

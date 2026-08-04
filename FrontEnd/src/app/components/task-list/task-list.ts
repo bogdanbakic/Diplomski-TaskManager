@@ -25,6 +25,7 @@ import { Dashboard } from '../dashboard/dashboard';
 import { DashboardService } from '../../services/dashboard-service';
 import { NotificationBell } from '../notification-bell/notification-bell';
 import { NotificationApiService } from '../../services/notification-api-service';
+import { CalendarWidget } from '../calendar-widget/calendar-widget';
 
 
 @Component({
@@ -33,7 +34,8 @@ import { NotificationApiService } from '../../services/notification-api-service'
   providers: [provideNativeDateAdapter()],
   imports: [CommonModule, MatTableModule,
     MatDialogModule, MatIconModule, MatRadioModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink, Dashboard, NotificationBell],
+    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, 
+    MatSelectModule, RouterLink, Dashboard, NotificationBell, CalendarWidget],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
