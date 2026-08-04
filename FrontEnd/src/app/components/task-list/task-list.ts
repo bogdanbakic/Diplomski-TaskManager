@@ -23,6 +23,8 @@ import { AuthService } from '../../services/auth-service';
 import { UserService } from '../../services/user-service';
 import { Dashboard } from '../dashboard/dashboard';
 import { DashboardService } from '../../services/dashboard-service';
+import { NotificationBell } from '../notification-bell/notification-bell';
+import { NotificationApiService } from '../../services/notification-api-service';
 
 
 @Component({
@@ -31,7 +33,7 @@ import { DashboardService } from '../../services/dashboard-service';
   providers: [provideNativeDateAdapter()],
   imports: [CommonModule, MatTableModule,
     MatDialogModule, MatIconModule, MatRadioModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink, Dashboard],
+    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink, Dashboard, NotificationBell],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
@@ -45,6 +47,7 @@ export class TaskListComponent {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly dashboardService = inject(DashboardService);
+  private readonly notificationApiService = inject(NotificationApiService);
   private dialog = inject(MatDialog);
   public TaskItemStatus = TaskItemStatus;
   isAdmin = this.authService.isAdmin;
@@ -81,12 +84,16 @@ export class TaskListComponent {
   const dialogRef = this.dialog.open(AddOrUpdateTask, {
     panelClass: 'add-or-update-task.scss',
     data: null,
+    
   });
 
   dialogRef.afterClosed().subscribe(() => {
     this.router.navigate(['./'], { relativeTo: this.route });
     this.taskResource.reload();
     this.dashboardService.refresh();
+    this.taskResource.reload();
+    this.dashboardService.refresh();
+    this.notificationApiService.refresh();
   });
 }
 
@@ -101,6 +108,9 @@ editTask(task: any) {
     this.router.navigate(['./'], { relativeTo: this.route });
     this.taskResource.reload();
     this.dashboardService.refresh();
+    this.taskResource.reload();
+    this.dashboardService.refresh();
+    this.notificationApiService.refresh();
   });
 }
 

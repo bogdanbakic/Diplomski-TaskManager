@@ -1,0 +1,20 @@
+.empty-state {
+  padding: 16px;
+  color: #666;
+  text-align: center;
+}
+
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.notification-date {
+  font-size: 11px;
+  color: #999;
+}
+
+button.unread {
+  background-color: #e3f2fd;
+}
