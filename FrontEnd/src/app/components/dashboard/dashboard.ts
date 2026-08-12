@@ -1,4 +1,3 @@
-// src/app/components/dashboard/dashboard.ts
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';

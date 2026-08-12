@@ -35,7 +35,7 @@ export class DashboardService {
   private dataSignal = signal<DashboardDto | null>(null);
   readonly data = this.dataSignal.asReadonly();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   refresh(): void {
     this.http.get<DashboardDto>(this.apiUrl).subscribe({

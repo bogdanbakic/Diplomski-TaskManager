@@ -1,31 +1,39 @@
-<mat-card class="calendar-card">
+<div class="calendar-wrapper" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
 
-  <div class="time-row">{{ now() | date: 'HH:mm:ss' }}</div>
-
-  <div class="header-row">
-    <button mat-icon-button (click)="previousMonth()">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-
-    <span class="month-label" (click)="goToToday()">{{ monthYearLabel() }}</span>
-
-    <button mat-icon-button (click)="nextMonth()">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
+  <div class="compact-bar">
+    <mat-icon class="calendar-icon">calendar_today</mat-icon>
+    <span class="compact-date">{{ compactLabel() }}</span>
+    <span class="compact-time">{{ now() | date: 'HH:mm:ss' }}</span>
   </div>
 
-  <div class="weekday-row">
-    @for (wd of weekDays; track wd) {
-    <span class="weekday-cell">{{ wd }}</span>
-    }
-  </div>
+  @if (isExpanded()) {
+  <mat-card class="expanded-panel">
+    <div class="header-row">
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
 
-  <div class="days-grid">
-    @for (day of days(); track day.fullDate.getTime()) {
-    <span class="day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
-      {{ day.date }}
-    </span>
-    }
-  </div>
+      <span class="month-label" (click)="goToToday()">{{ monthYearLabel() }}</span>
 
-</mat-card>
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="weekday-row">
+      @for (wd of weekDays; track wd) {
+      <span class="weekday-cell">{{ wd }}</span>
+      }
+    </div>
+
+    <div class="days-grid">
+      @for (day of days(); track day.fullDate.getTime()) {
+      <span class="day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
+        {{ day.date }}
+      </span>
+      }
+    </div>
+  </mat-card>
+  }
+
+</div>

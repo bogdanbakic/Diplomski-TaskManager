@@ -1,8 +1,51 @@
-.header-row {
+:host {
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.dialog-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 12px;
+  padding: 24px 24px 0;
+
+  h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+.header-icon {
+  color: #667eea;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.user-management-content {
+  min-width: 520px;
+  max-height: 60vh;
+  padding: 20px 24px;
+}
+
+.users-table {
+  width: 100%;
+
+  th {
+    font-size: 13px;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  td {
+    font-size: 14.5px;
+    padding: 12px 8px !important;
+  }
 }
 
 .role-select {
@@ -13,6 +56,23 @@
   }
 }
 
-table {
-  width: 100%;
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+
+  &.you {
+    background: #e8eaf6;
+    color: #667eea;
+  }
+}
+
+mat-dialog-actions {
+  padding: 8px 24px 20px;
+
+  button {
+    border-radius: 8px;
+  }
 }

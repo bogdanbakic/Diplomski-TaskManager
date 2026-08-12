@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatSelectModule } from "@angular/material/select";
+import { MatTabsModule } from '@angular/material/tabs';
 import { TaskItemStatus } from '../../models/task-item-status';
 import { NotificationService } from '../../services/notification-service';
 import { AuthService } from '../../services/auth-service';
@@ -26,7 +27,8 @@ import { DashboardService } from '../../services/dashboard-service';
 import { NotificationBell } from '../notification-bell/notification-bell';
 import { NotificationApiService } from '../../services/notification-api-service';
 import { CalendarWidget } from '../calendar-widget/calendar-widget';
-
+import { UserManagement } from '../user-management/user-management';
+import { LogoutConfirm } from '../logout-confirm/logout-confirm';
 
 @Component({
   selector: 'app-task-list',
@@ -34,8 +36,8 @@ import { CalendarWidget } from '../calendar-widget/calendar-widget';
   providers: [provideNativeDateAdapter()],
   imports: [CommonModule, MatTableModule,
     MatDialogModule, MatIconModule, MatRadioModule, MatTooltipModule,
-    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, 
-    MatSelectModule, RouterLink, Dashboard, NotificationBell, CalendarWidget],
+    MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatSelectModule, RouterLink,
+    MatTabsModule, Dashboard, NotificationBell, CalendarWidget],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss',
@@ -52,7 +54,9 @@ export class TaskListComponent {
   private readonly notificationApiService = inject(NotificationApiService);
   private dialog = inject(MatDialog);
   public TaskItemStatus = TaskItemStatus;
+
   isAdmin = this.authService.isAdmin;
+  currentUserName = this.authService.currentUserName;
 
   StatusEnum = TaskItemStatus;
   statusList = Object.values(TaskItemStatus);
@@ -77,79 +81,82 @@ export class TaskListComponent {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    const dialogRef = this.dialog.open(LogoutConfirm, {
+      width: '420px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   addTask() {
-  this.router.navigate(['add-task'], { relativeTo: this.route });
-  const dialogRef = this.dialog.open(AddOrUpdateTask, {
-    panelClass: 'add-or-update-task.scss',
-    data: null,
-    
-  });
+    this.router.navigate(['add-task'], { relativeTo: this.route });
+    const dialogRef = this.dialog.open(AddOrUpdateTask, {
+      panelClass: 'add-or-update-task.scss',
+      data: null,
+    });
 
-  dialogRef.afterClosed().subscribe(() => {
-    this.router.navigate(['./'], { relativeTo: this.route });
-    this.taskResource.reload();
-    this.dashboardService.refresh();
-    this.taskResource.reload();
-    this.dashboardService.refresh();
-    this.notificationApiService.refresh();
-  });
-}
-
-editTask(task: any) {
-  if (task?.id) {
-    this.router.navigate(['edit-task', task.id], { relativeTo: this.route });
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['./'], { relativeTo: this.route });
+      this.taskResource.reload();
+      this.dashboardService.refresh();
+      this.notificationApiService.refresh();
+    });
   }
-  const dialogRef = this.dialog.open(AddOrUpdateTask, {
-    data: task
-  });
-  dialogRef.afterClosed().subscribe(() => {
-    this.router.navigate(['./'], { relativeTo: this.route });
-    this.taskResource.reload();
-    this.dashboardService.refresh();
-    this.taskResource.reload();
-    this.dashboardService.refresh();
-    this.notificationApiService.refresh();
-  });
-}
 
-deleteTask(task: TaskItem) {
-  this.router.navigate(['delete-task', task.id], { relativeTo: this.route });
-  const dialogRef = this.dialog.open(DeleteTask, {
-    data: task
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    this.router.navigate(['./'], { relativeTo: this.route });
-    if (result) {
-      this.taskResource.reload();
-      this.dashboardService.refresh();
+  editTask(task: any) {
+    if (task?.id) {
+      this.router.navigate(['edit-task', task.id], { relativeTo: this.route });
     }
-  });
-}
-
-markAsDone(row: any) {
-  const payload = {
-    name: row.name,
-    description: row.description,
-    status: TaskItemStatus.Done,
-    startDate: row.startDate,
-    endDate: row.endDate,
-    assignedToUserId: row.assignedToUserId
-  };
-
-  this.taskService.updateTask(row.id, payload).subscribe({
-    next: () => {
-      this.notificationService.success('Task done!');
+    const dialogRef = this.dialog.open(AddOrUpdateTask, {
+      data: task
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['./'], { relativeTo: this.route });
       this.taskResource.reload();
       this.dashboardService.refresh();
-    },
-    error: (err: any) => console.error('Error while updating status: ', err)
-  });
-}
+      this.notificationApiService.refresh();
+    });
+  }
+
+  deleteTask(task: TaskItem) {
+    this.router.navigate(['delete-task', task.id], { relativeTo: this.route });
+    const dialogRef = this.dialog.open(DeleteTask, {
+      data: task
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['./'], { relativeTo: this.route });
+      if (result) {
+        this.taskResource.reload();
+        this.dashboardService.refresh();
+      }
+    });
+  }
+
+  markAsDone(row: any) {
+    const payload = {
+      name: row.name,
+      description: row.description,
+      status: TaskItemStatus.Done,
+      startDate: row.startDate,
+      endDate: row.endDate,
+      assignedToUserId: row.assignedToUserId
+    };
+
+    this.taskService.updateTask(row.id, payload).subscribe({
+      next: () => {
+        this.notificationService.success('Task done!');
+        this.taskResource.reload();
+        this.dashboardService.refresh();
+      },
+      error: (err: any) => console.error('Error while updating status: ', err)
+    });
+  }
 
   onStatusChange(newStatus: any) {
     this.selectedStatus.set(newStatus);
@@ -158,6 +165,17 @@ markAsDone(row: any) {
         this.taskResource.reload();
       },
       error: (err: any) => console.error('Error while filtering tasks! ', err)
+    });
+  }
+  onTabChange(event: any) {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 50);
+  }
+  openUserManagement() {
+    this.dialog.open(UserManagement, {
+      panelClass: 'user-management-dialog',
+      width: '600px'
     });
   }
 }

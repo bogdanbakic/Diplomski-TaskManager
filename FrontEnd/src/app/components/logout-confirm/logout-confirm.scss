@@ -17,31 +17,24 @@
 }
 
 .header-icon {
-  color: #667eea;
   font-size: 28px;
   width: 28px;
   height: 28px;
+
+  &.warn {
+    color: #e53935;
+  }
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.logout-content {
   padding: 20px 24px;
-  min-width: 480px;
-}
+  min-width: 380px;
 
-.date-time-row {
-  display: flex;
-  gap: 12px;
-}
-
-.date-field {
-  flex: 2;
-}
-
-.time-field {
-  flex: 1;
+  p {
+    margin: 0;
+    font-size: 15px;
+    color: #333;
+  }
 }
 
 mat-dialog-actions {
@@ -49,9 +42,5 @@ mat-dialog-actions {
 
   button {
     border-radius: 8px;
-  }
-
-  button[color="primary"] {
-    padding: 4px 24px;
   }
 }

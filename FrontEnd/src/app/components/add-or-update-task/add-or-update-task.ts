@@ -38,7 +38,7 @@ export class AddOrUpdateTask {
   private dialogRef = inject(MatDialogRef<AddOrUpdateTask>, { optional: true });
   private readonly notificationService = inject(NotificationService);
   private readonly fb = inject(FormBuilder);
-  readonly dialogTitle = computed(() => this.data?.id ? `Edit task: ${this.data.name}` : 'Add new Task');
+  readonly dialogTitle = computed(() => this.data?.id ? `Editovanje zadatka: ${this.data.name}` : 'Kreiranje novog zadatka');
 
   data = inject(MAT_DIALOG_DATA, { optional: true });
   minDate = new Date();
@@ -90,14 +90,14 @@ export class AddOrUpdateTask {
     const rawValue = this.taskForm.getRawValue();
 
     const taskPayload: TaskItem = {
-  id: rawValue.id ? rawValue.id : null,
-  name: rawValue.name ?? '',
-  description: rawValue.description ?? '',
-  status: rawValue.status ?? TaskItemStatus.ToDo,
-  startDate: this.combineDateAndTime(rawValue.startDate!, rawValue.startTime!)!,
-  endDate: this.combineDateAndTime(rawValue.endDate!, rawValue.endTime!)!,
-  assignedToUserId: rawValue.assignedToUserId ?? null
-};
+      id: rawValue.id ? rawValue.id : null,
+      name: rawValue.name ?? '',
+      description: rawValue.description ?? '',
+      status: rawValue.status ?? TaskItemStatus.ToDo,
+      startDate: this.combineDateAndTime(rawValue.startDate!, rawValue.startTime!)!,
+      endDate: this.combineDateAndTime(rawValue.endDate!, rawValue.endTime!)!,
+      assignedToUserId: rawValue.assignedToUserId ?? null
+    };
 
     const request$ = this.data?.id
       ? this.taskService.updateTask(this.data.id, taskPayload)

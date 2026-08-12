@@ -1,5 +1,5 @@
-export enum TaskItemStatus{
-    All= "All",
-    ToDo= "ToDo",
-    Done= "Done"
+export enum TaskItemStatus {
+    All = "All",
+    ToDo = "ToDo",
+    Done = "Done"
 }

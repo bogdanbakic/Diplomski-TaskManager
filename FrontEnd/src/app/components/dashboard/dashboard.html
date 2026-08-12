@@ -1,4 +1,4 @@
-    @if (dashboardData(); as data) {
+@if (dashboardData(); as data) {
 <div class="dashboard-container">
 
   <div class="stat-cards">
@@ -28,19 +28,25 @@
   <div class="charts-row">
     <mat-card class="chart-card">
       <h3>Zadaci po statusu</h3>
-      <canvas baseChart [data]="statusChartData()" [options]="statusChartOptions" type="pie"></canvas>
+      <div class="chart-wrapper">
+        <canvas baseChart [data]="statusChartData()" [options]="statusChartOptions" type="pie"></canvas>
+      </div>
     </mat-card>
 
     <mat-card class="chart-card">
       <h3>Kreirao vs. Dodeljeno</h3>
-      <canvas baseChart [data]="ownershipChartData()" [options]="ownershipChartOptions" type="bar"></canvas>
+      <div class="chart-wrapper">
+        <canvas baseChart [data]="ownershipChartData()" [options]="ownershipChartOptions" type="bar"></canvas>
+      </div>
     </mat-card>
   </div>
 
   @if (isAdmin() && data.tasksByUser) {
   <mat-card class="chart-card full-width">
     <h3>Zadaci po korisniku</h3>
-    <canvas baseChart [data]="usersChartData()" [options]="usersChartOptions" type="bar"></canvas>
+    <div class="chart-wrapper">
+      <canvas baseChart [data]="usersChartData()" [options]="usersChartOptions" type="bar"></canvas>
+    </div>
   </mat-card>
   }
 

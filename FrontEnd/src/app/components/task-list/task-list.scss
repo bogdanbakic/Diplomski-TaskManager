@@ -1,98 +1,167 @@
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 25px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+.page-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-#alignment {
+.top-bar {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.main-tabs {
+
+  ::ng-deep .mat-mdc-tab-label,
+  ::ng-deep .mdc-tab__text-label {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  ::ng-deep .mdc-tab {
+    height: 64px;
+    padding: 0 32px;
+  }
+}
+
+.tab-content {
+  padding-top: 20px;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.status-filter {
+  min-width: 200px;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 24px;
+  background-color: #1976d2;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1565c0;
+  }
+}
+
+.table-wrapper {
   width: 100%;
-  border-bottom: 1px solid #eee;
+  overflow-x: auto;
+}
 
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
+table {
+  width: 100%;
+  min-width: 900px;
+
+  th {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 16px !important;
   }
 
-  .controls-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; 
-    padding: 0 20px;
+  td {
+    font-size: 14.5px;
+    padding: 12px 16px !important;
   }
-}
-
-th.mat-mdc-header-cell,
-td.mat-mdc-cell {
-  text-align: center;
-  vertical-align: middle;
-  padding: 12px 8px !important;
-}
-
-th.mat-mdc-header-cell {
-  font-weight: bold;
-  color: #333;
-}
-
-.mat-column-actions {
-  padding-right: 20px !important;
 }
 
 .action-container {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 10px;
-  gap: 5px;
-}
-
-.btn-save,
-.btn-edit,
-.btn-delete {
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
-.btn-save {
-  background-color: #2e7d32;
-}
-.btn-edit {
-  background-color: #2ba8fb;
-}
-.btn-delete {
-  background-color: #fc4040;
-}
-
-.btn-add {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
-  padding: 10px 24px;
-  margin: 10px;
-  border: none;
-  border-radius: 50px;
-  background-color: #2ba8fb;
-  color: #ffffff;
-  font-weight: 600;
 
-  &:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
+  button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ::ng-deep .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+  }
+
+  .btn-save {
+    background-color: #43a047;
+
+    &:hover {
+      background-color: #388e3c;
+    }
+  }
+
+  .btn-edit {
+    background-color: #1e88e5;
+
+    &:hover {
+      background-color: #1976d2;
+    }
+  }
+
+  .btn-delete {
+    background-color: #e53935;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 22px;
+  }
+
+  .controls-row {
+    gap: 16px;
+  }
+
+  .main-tabs {
+
+    ::ng-deep .mat-mdc-tab-label,
+    ::ng-deep .mdc-tab__text-label {
+      font-size: 16px;
+    }
+
+    ::ng-deep .mdc-tab {
+      height: 52px;
+      padding: 0 16px;
+    }
+  }
+
+  table {
+    min-width: 700px;
+
+    th,
+    td {
+      font-size: 13px;
+      padding: 8px 10px !important;
+    }
   }
 }

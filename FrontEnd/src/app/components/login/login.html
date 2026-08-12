@@ -1,28 +1,36 @@
 <div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" name="email" required />
-        </mat-form-field>
+  <div class="login-card">
+    <div class="brand">
+      <mat-icon class="brand-icon">task_alt</mat-icon>
+      <h1>Task Manager</h1>
+    </div>
+    <p class="subtitle">Prijavite se da nastavite</p>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" name="password" required />
-        </mat-form-field>
+    <form (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <mat-icon matPrefix>mail_outline</mat-icon>
+        <input matInput type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" name="email" required />
+      </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading()" class="full-width">
-          Login
-        </button>
-      </form>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Lozinka</mat-label>
+        <mat-icon matPrefix>lock_outline</mat-icon>
+        <input matInput type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" name="password"
+          required />
+      </mat-form-field>
 
-      <p class="register-link">
-        Don't have an account? <a routerLink="/register">Register</a>
-      </p>
-    </mat-card-content>
-  </mat-card>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading()" class="submit-btn">
+        @if (loading()) {
+        <span>Prijavljivanje...</span>
+        } @else {
+        <span>Login</span>
+        }
+      </button>
+    </form>
+
+    <p class="register-link">
+      Nemate nalog? <a routerLink="/register">Registrujte se</a>
+    </p>
+  </div>
 </div>

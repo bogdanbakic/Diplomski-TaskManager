@@ -23,7 +23,7 @@ export class NotificationApiService {
     this.notificationsSignal().filter(n => !n.isRead).length
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   refresh(): void {
     this.http.get<NotificationDto[]>(this.apiUrl).subscribe({

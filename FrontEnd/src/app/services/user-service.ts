@@ -1,4 +1,3 @@
-// src/app/services/user-service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -17,7 +16,7 @@ export interface UserDto {
 export class UserService {
   private apiUrl = `${environment.apiUrl}/Users`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(this.apiUrl);

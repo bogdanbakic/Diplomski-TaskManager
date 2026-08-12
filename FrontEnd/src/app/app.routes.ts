@@ -27,11 +27,6 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'user-management',
-        component: UserManagement,
-        canActivate: [authGuard]
-    },
-    {
         path: '',
         redirectTo: '/login',
         pathMatch: 'full'

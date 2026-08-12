@@ -1,12 +1,14 @@
-<h2 mat-dialog-title class="custom-header">
-    Delete confirmation
-</h2>
+<div class="dialog-header">
+  <mat-icon class="header-icon warn">delete_outline</mat-icon>
+  <h2 mat-dialog-title>Brisanje zadatka</h2>
+</div>
 
-<mat-dialog-content class="custom-content">
-    <span>Are you sure you want to delete {{ model().name}} ?</span>
+<mat-dialog-content class="delete-content">
+  <p>Da li ste sigurni da želite da obrišete zadatak <strong>"{{ model().name }}"</strong>?</p>
+  <p class="subtext">Ova akcija se ne može poništiti.</p>
 </mat-dialog-content>
 
-<mat-dialog-actions  class="custom-actions">
-    <button mat-button mat-dialog-close class="btn-cancel" (click)="closeDelete()">Cancel</button>
-    <button mat-raised-button class="btn-delete" (click)="confirmDelete()">Delete</button>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDelete()">Otkaži</button>
+  <button mat-raised-button color="warn" (click)="confirmDelete()">Obriši</button>
 </mat-dialog-actions>

@@ -21,6 +21,7 @@ interface AuthResponse {
 
 const CLAIM_NAMEID = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
 const CLAIM_ROLE = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+const CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 
 interface DecodedToken {
   [key: string]: any;
@@ -39,6 +40,8 @@ export class AuthService {
 
   isLoggedIn = computed(() => !!this.tokenSignal());
   currentUserId = computed(() => this.decodedToken()?.[CLAIM_NAMEID] ?? null);
+  currentUserName = computed(() => this.decodedToken()?.[CLAIM_NAME] ?? null);
+  private readonly CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2008/06/identity/claims/name';
   currentUserRoles = computed(() => {
     const roles = this.decodedToken()?.[CLAIM_ROLE];
     if (!roles) return [];
@@ -46,7 +49,7 @@ export class AuthService {
   });
   isAdmin = computed(() => this.currentUserRoles().includes('Admin'));
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(dto: RegisterDto): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.apiUrl}/register`, dto);

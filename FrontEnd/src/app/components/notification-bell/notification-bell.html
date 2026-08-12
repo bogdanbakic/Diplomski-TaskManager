@@ -1,5 +1,4 @@
-<!-- src/app/components/notification-bell/notification-bell.html -->
-<button mat-icon-button [matMenuTriggerFor]="menu">
+<button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Notifikacije'">
   <mat-icon [matBadge]="unreadCount() > 0 ? unreadCount() : null" matBadgeColor="warn" matBadgeSize="small">
     notifications
   </mat-icon>
@@ -9,13 +8,13 @@
   @if (notifications().length === 0) {
   <div class="empty-state">No notifications</div>
   } @else {
-    @for (n of notifications(); track n.id) {
-    <button mat-menu-item (click)="onNotificationClick(n.id)" [class.unread]="!n.isRead">
-      <div class="notification-item">
-        <span>{{ n.message }}</span>
-        <span class="notification-date">{{ n.createdAt | date: 'short' }}</span>
-      </div>
-    </button>
-    }
+  @for (n of notifications(); track n.id) {
+  <button mat-menu-item (click)="onNotificationClick(n.id)" [class.unread]="!n.isRead">
+    <div class="notification-item">
+      <span>{{ n.message }}</span>
+      <span class="notification-date">{{ n.createdAt | date: 'short' }}</span>
+    </div>
+  </button>
+  }
   }
 </mat-menu>

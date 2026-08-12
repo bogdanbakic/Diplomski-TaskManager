@@ -4,10 +4,12 @@ import { TaskService } from '../../services/task-service';
 import { TaskItem } from '../../models/task-item.model';
 import { NotificationService } from '../../services/notification-service';
 import { TaskItemStatus } from '../../models/task-item-status';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-delete-task',
-  imports: [MatDialogActions, MatDialogContent],
+  imports: [MatDialogActions, MatDialogContent, MatIconModule, MatButtonModule],
   templateUrl: './delete-task.html',
   styleUrl: './delete-task.scss',
 })

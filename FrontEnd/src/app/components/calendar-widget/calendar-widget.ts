@@ -22,12 +22,17 @@ interface CalendarDay {
 export class CalendarWidget implements OnInit, OnDestroy {
   now = signal(new Date());
   viewDate = signal(new Date());
+  isExpanded = signal(false);
   private intervalId: any;
 
-  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  weekDays = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned'];
 
   monthYearLabel = computed(() => {
-    return this.viewDate().toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    return this.viewDate().toLocaleDateString('sr-Latn', { month: 'long', year: 'numeric' });
+  });
+
+  compactLabel = computed(() => {
+    return this.now().toLocaleDateString('sr-Latn', { weekday: 'short', day: '2-digit', month: 'short' });
   });
 
   days = computed<CalendarDay[]>(() => {
@@ -46,45 +51,36 @@ export class CalendarWidget implements OnInit, OnDestroy {
 
     for (let i = firstWeekday - 1; i >= 0; i--) {
       const dayNum = daysInPrevMonth - i;
-      result.push({
-        date: dayNum,
-        isCurrentMonth: false,
-        isToday: false,
-        fullDate: new Date(year, month - 1, dayNum)
-      });
+      result.push({ date: dayNum, isCurrentMonth: false, isToday: false, fullDate: new Date(year, month - 1, dayNum) });
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
       const fullDate = new Date(year, month, d);
-      result.push({
-        date: d,
-        isCurrentMonth: true,
-        isToday: fullDate.toDateString() === today.toDateString(),
-        fullDate
-      });
+      result.push({ date: d, isCurrentMonth: true, isToday: fullDate.toDateString() === today.toDateString(), fullDate });
     }
 
     while (result.length < 42) {
       const nextDay = result.length - (firstWeekday + daysInMonth) + 1;
-      result.push({
-        date: nextDay,
-        isCurrentMonth: false,
-        isToday: false,
-        fullDate: new Date(year, month + 1, nextDay)
-      });
+      result.push({ date: nextDay, isCurrentMonth: false, isToday: false, fullDate: new Date(year, month + 1, nextDay) });
     }
 
     return result;
   });
 
   ngOnInit() {
-    this.intervalId = setInterval(() => {
-      this.now.set(new Date());
-    }, 1000);
+    this.intervalId = setInterval(() => this.now.set(new Date()), 1000);
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
+  }
+
+  onMouseEnter() {
+    this.isExpanded.set(true);
+  }
+
+  onMouseLeave() {
+    this.isExpanded.set(false);
   }
 
   previousMonth() {
