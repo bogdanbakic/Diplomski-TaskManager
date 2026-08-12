@@ -173,9 +173,10 @@ export class TaskListComponent {
     }, 50);
   }
   openUserManagement() {
-    this.dialog.open(UserManagement, {
-      panelClass: 'user-management-dialog',
-      width: '600px'
-    });
-  }
+  this.dialog.open(UserManagement, {
+    panelClass: 'user-management-dialog',
+    width: '720px',
+    maxWidth: '95vw'
+  });
+}
 }

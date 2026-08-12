@@ -1,0 +1,14 @@
+<div class="dialog-header">
+    <mat-icon class="header-icon warn">person_remove</mat-icon>
+    <h2 mat-dialog-title>Potvrda brisanja naloga</h2>
+</div>
+
+<mat-dialog-content class="delete-content">
+    <p>Da li ste sigurni da želite da obrišete korisnika <strong>"{{ data.fullName }}"</strong>?</p>
+    <p class="subtext">Ova akcija se ne može poništiti.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Otkaži</button>
+    <button mat-raised-button color="warn" (click)="confirm()">Obriši</button>
+</mat-dialog-actions>

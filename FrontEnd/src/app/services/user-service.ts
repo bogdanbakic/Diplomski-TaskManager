@@ -25,4 +25,7 @@ export class UserService {
   updateRole(userId: string, role: string): Observable<{ message: string }> {
     return this.http.put<{ message: string }>(`${this.apiUrl}/${userId}/role`, { role });
   }
+  deleteUser(userId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${userId}`);
+  }
 }
