@@ -37,7 +37,7 @@ export class Login {
       },
       error: (err) => {
         this.loading.set(false);
-        this.notificationService.error('Invalid email or password.');
+        this.notificationService.error('Nevažeći email ili lozinka.');
       }
     });
   }

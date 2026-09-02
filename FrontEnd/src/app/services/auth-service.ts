@@ -88,4 +88,7 @@ export class AuthService {
   resetPassword(userId: string, newPassword: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { userId, newPassword });
   }
+ requestPasswordReset(usernameOrEmail: string): Observable<{ message: string }> {
+  return this.http.post<{ message: string }>(`${this.apiUrl}/request-password-reset`, { usernameOrEmail });
+}
 }

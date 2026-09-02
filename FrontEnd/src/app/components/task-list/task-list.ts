@@ -150,11 +150,11 @@ export class TaskListComponent {
 
     this.taskService.updateTask(row.id, payload).subscribe({
       next: () => {
-        this.notificationService.success('Task done!');
+        this.notificationService.success('Zadatak označen kao završen!');
         this.taskResource.reload();
         this.dashboardService.refresh();
       },
-      error: (err: any) => console.error('Error while updating status: ', err)
+      error: (err: any) => console.error('Greška pri ažuriranju statusa: ', err)
     });
   }
 
@@ -164,7 +164,7 @@ export class TaskListComponent {
       next: () => {
         this.taskResource.reload();
       },
-      error: (err: any) => console.error('Error while filtering tasks! ', err)
+      error: (err: any) => console.error('Greška pri filtriranju zadataka! ', err)
     });
   }
   onTabChange(event: any) {
@@ -173,10 +173,19 @@ export class TaskListComponent {
     }, 50);
   }
   openUserManagement() {
-  this.dialog.open(UserManagement, {
-    panelClass: 'user-management-dialog',
-    width: '720px',
-    maxWidth: '95vw'
-  });
-}
+    this.dialog.open(UserManagement, {
+      panelClass: 'user-management-dialog',
+      width: '720px',
+      maxWidth: '95vw'
+    });
+  }
+  requestPasswordReset() {
+    const usernameOrEmail = this.authService.currentUserName();
+    if (!usernameOrEmail) return;
+
+    this.authService.requestPasswordReset(usernameOrEmail).subscribe({
+      next: () => this.notificationService.success('Zahtev je poslat administratoru.'),
+      error: () => this.notificationService.error('Greška pri slanju zahteva.')
+    });
+  }
 }

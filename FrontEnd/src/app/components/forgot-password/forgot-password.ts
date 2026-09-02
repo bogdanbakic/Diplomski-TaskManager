@@ -1,48 +1,45 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth-service';
 import { NotificationService } from '../../services/notification-service';
-import { MatIconModule } from "@angular/material/icon";
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatIconModule],
+  imports: [CommonModule, FormsModule, RouterLink, MatFormFieldModule,
+    MatInputModule, MatButtonModule, MatCardModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './register.html',
-  styleUrls: ['./register.scss'],
+  templateUrl: './forgot-password.html',
+  styleUrl: './forgot-password.scss',
 })
-export class Register {
+export class ForgotPassword {
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
   private readonly notificationService = inject(NotificationService);
 
-  fullName = signal('');
-  email = signal('');
-  password = signal('');
+  usernameOrEmail = signal('');
   loading = signal(false);
+  submitted = signal(false);
 
   onSubmit() {
+    if (!this.usernameOrEmail().trim()) return;
+
     this.loading.set(true);
-    this.authService.register({
-      fullName: this.fullName(),
-      email: this.email(),
-      password: this.password()
-    }).subscribe({
-      next: () => {
+    this.authService.requestPasswordReset(this.usernameOrEmail()).subscribe({
+      next: (res) => {
         this.loading.set(false);
-        this.notificationService.success('Uspesno ste se registrovali. Molimo vas da se ulogujete.');
-        this.router.navigate(['/login']);
+        this.submitted.set(true);
+        this.notificationService.success(res.message);
       },
-      error: (err) => {
+      error: () => {
         this.loading.set(false);
-        this.notificationService.error('Registracija nije uspela. Molimo vas da proverite vaše podatke.');
+        this.notificationService.error('Došlo je do greške. Pokušajte ponovo.');
       }
     });
   }

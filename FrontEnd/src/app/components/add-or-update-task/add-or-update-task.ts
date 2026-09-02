@@ -83,7 +83,7 @@ export class AddOrUpdateTask {
 
   saveTask() {
     if (this.taskForm.invalid) {
-      this.notificationService.error('Please fill out all fields correctly.');
+      this.notificationService.error('Molimo Vas da popunite sva polja ispravno.');
       return;
     }
 
@@ -105,11 +105,11 @@ export class AddOrUpdateTask {
 
     request$.subscribe({
       next: (response) => {
-        this.notificationService.success(`${this.data?.id ? 'Updated' : 'Created'} task successfully!`);
+        this.notificationService.success(`${this.data?.id ? 'Ažuriran' : 'Kreiran'} zadatak uspešno!`);
         this.dialogRef?.close(response);
       },
       error: (error) => {
-        this.notificationService.error('Error occurred while updating task!');
+        this.notificationService.error('Došlo je do greške prilikom ažuriranja zadatka!');
       }
     });
   }

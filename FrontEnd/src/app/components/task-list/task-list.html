@@ -32,6 +32,12 @@
             <mat-icon>manage_accounts</mat-icon>
           </button>
           }
+          
+          @if (!isAdmin()) {
+          <button mat-icon-button (click)="requestPasswordReset()" [matTooltip]="'Zatraži reset lozinke'">
+            <mat-icon>lock_reset</mat-icon>
+          </button>
+          }
 
           <button mat-icon-button (click)="logout()" [matTooltip]="'Odjava'">
             <mat-icon>logout</mat-icon>

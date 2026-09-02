@@ -37,10 +37,10 @@ export class DeleteTask {
   confirmDelete() {
     this.taskService.deleteById(this.data.id!).subscribe({
       next: () => {
-        this.notificationService.success('Deleted task successfully!');
+        this.notificationService.success('Zadatak obrisan uspešno!');
         this.dialogRef?.close(true);
       },
-      error: (error: any) => this.notificationService.error(error)
+      error: (error: any) => this.notificationService.error('Došlo je do greške prilikom brisanja zadatka!')
     });
   }
 

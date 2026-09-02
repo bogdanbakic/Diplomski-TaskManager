@@ -6,6 +6,7 @@ import { Login } from './components/login/login';
 import { authGuard } from './guards/auth-guard';
 import { Register } from './components/register/register';
 import { UserManagement } from './components/user-management/user-management';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
 
 export const routes: Routes = [
     {
@@ -15,6 +16,10 @@ export const routes: Routes = [
     {
         path: 'register',
         component: Register
+    },
+    {
+        path: 'forgot-password',
+        component: ForgotPassword
     },
     {
         path: 'task-list',
@@ -33,5 +38,5 @@ export const routes: Routes = [
     },
     {
         path: '**', redirectTo: '/login'
-    }
+    },
 ];
