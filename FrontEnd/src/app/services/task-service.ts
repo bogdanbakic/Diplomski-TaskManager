@@ -5,13 +5,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { TaskDto } from '../models/task-dto';
 import { CreateTaskDto } from '../models/create-task-dto';
 import { TaskItemStatus } from '../models/task-item-status';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class TaskService {
-  private apiUrl = 'http://localhost:5000/api/Task';
+  private apiUrl = `${environment.apiUrl}/Task`;
   constructor(private http: HttpClient) { }
 
   getAll(status?: TaskItemStatus) {

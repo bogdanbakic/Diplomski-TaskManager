@@ -94,7 +94,7 @@ export class UserManagement {
             this.notificationService.success('Korisnik je uspešno obrisan.');
             this.usersResource.reload();
           },
-          error: (err: any) => this.notificationService.error(err?.error ?? 'Greška pri brisanju korisnika.')
+          error: (err: any) => this.notificationService.error(err?.error?.message ?? 'Greška pri brisanju korisnika.')
         });
       }
     });

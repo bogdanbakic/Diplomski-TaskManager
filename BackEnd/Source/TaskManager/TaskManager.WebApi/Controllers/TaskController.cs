@@ -88,7 +88,7 @@ namespace TaskManager.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Greška pri editovanju task-a sa id: {id} , message: {ex}");
+                return StatusCode(500, $"Neočekivana greška prilikom editovanja task-a sa id: {id} , message: {ex}");
             }
         }
 
@@ -100,13 +100,17 @@ namespace TaskManager.WebApi.Controllers
                 await _taskService.DeleteAsync(id, CurrentUserId, IsAdmin);
                 return NoContent();
             }
+            catch (EntityNotFound ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (UnauthorizedAccessException)
             {
                 return Forbid();
             }
             catch (Exception ex)
             {
-                return BadRequest($"Greška pri brisanju task-a sa id: {id} , message: {ex}");
+                return StatusCode(500, $"Neočekivana greška prilikom brisanja task-a sa id: {id} , message: {ex}");
             }
         }
     }

@@ -41,7 +41,7 @@ export class AddOrUpdateTask {
   readonly dialogTitle = computed(() => this.data?.id ? `Editovanje zadatka: ${this.data.name}` : 'Kreiranje novog zadatka');
 
   data = inject(MAT_DIALOG_DATA, { optional: true });
-  minDate = new Date();
+  minDate: Date | null = new Date();
 
   usersResource = rxResource({
     stream: () => this.userService.getAll(),
@@ -62,6 +62,7 @@ export class AddOrUpdateTask {
 
   ngOnInit() {
     if (this.data) {
+      this.minDate = null;
       const start = new Date(this.data.startDate + (this.data.startDate.endsWith('Z') ? '' : 'Z'));
       const end = new Date(this.data.endDate + (this.data.endDate.endsWith('Z') ? '' : 'Z'));
 
@@ -109,7 +110,7 @@ export class AddOrUpdateTask {
         this.dialogRef?.close(response);
       },
       error: (error) => {
-        this.notificationService.error('Došlo je do greške prilikom ažuriranja zadatka!');
+        this.notificationService.error(`Došlo je do greške prilikom ${this.data?.id ? 'ažuriranja' : 'kreiranja'} zadatka!`);
       }
     });
   }

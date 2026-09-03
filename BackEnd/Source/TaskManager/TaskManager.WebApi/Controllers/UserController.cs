@@ -43,9 +43,16 @@ namespace TaskManager.WebApi.Controllers
             if (id == currentUserId)
                 return BadRequest("Ne možete obrisati sopstveni nalog.");
 
-            var success = await _userService.DeleteUserAsync(id);
-            if (!success)
-                return NotFound("Korisnik nije pronađen.");
+            try
+            {
+                var success = await _userService.DeleteUserAsync(id);
+                if (!success)
+                    return NotFound("Korisnik nije pronađen.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
 
             return Ok(new { message = "Korisnik je uspešno obrisan." });
         }
