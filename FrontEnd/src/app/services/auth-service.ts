@@ -1,4 +1,3 @@
-// src/app/services/auth-service.ts
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -22,6 +21,7 @@ interface AuthResponse {
 const CLAIM_NAMEID = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
 const CLAIM_ROLE = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
 const CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+const CLAIM_EMAIL = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress';
 
 interface DecodedToken {
   [key: string]: any;
@@ -41,7 +41,8 @@ export class AuthService {
   isLoggedIn = computed(() => !!this.tokenSignal());
   currentUserId = computed(() => this.decodedToken()?.[CLAIM_NAMEID] ?? null);
   currentUserName = computed(() => this.decodedToken()?.[CLAIM_NAME] ?? null);
-  private readonly CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2008/06/identity/claims/name';
+  currentUserEmail = computed(() => this.decodedToken()?.[CLAIM_EMAIL] ?? null);
+
   currentUserRoles = computed(() => {
     const roles = this.decodedToken()?.[CLAIM_ROLE];
     if (!roles) return [];

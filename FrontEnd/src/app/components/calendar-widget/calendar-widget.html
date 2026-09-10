@@ -28,7 +28,8 @@
 
     <div class="days-grid">
       @for (day of days(); track day.fullDate.getTime()) {
-      <span class="day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
+      <span class="day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday"
+        [class.has-task]="day.hasTask">
         {{ day.date }}
       </span>
       }

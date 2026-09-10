@@ -64,7 +64,7 @@ namespace TaskManager.Infrastructure.Services
 
             return true;
         }
-
+       
         public async Task<bool> DeleteUserAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

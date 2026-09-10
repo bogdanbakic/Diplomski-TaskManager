@@ -2,7 +2,7 @@
 
   <div class="top-bar">
     <h1 class="app-title">Dobrodošli, {{ currentUserName() }}!</h1>
-    <app-calendar-widget></app-calendar-widget>
+    <app-calendar-widget [tasks]="taskResource.value()"></app-calendar-widget>
   </div>
 
   <mat-tab-group class="main-tabs" animationDuration="200ms" (selectedTabChange)="onTabChange($event)">

@@ -57,6 +57,7 @@ export class TaskListComponent {
 
   isAdmin = this.authService.isAdmin;
   currentUserName = this.authService.currentUserName;
+  currentUserEmail = this.authService.currentUserEmail;
 
   StatusEnum = TaskItemStatus;
   statusList = Object.values(TaskItemStatus);
@@ -180,7 +181,7 @@ export class TaskListComponent {
     });
   }
   requestPasswordReset() {
-    const usernameOrEmail = this.authService.currentUserName();
+    const usernameOrEmail = this.currentUserEmail();
     if (!usernameOrEmail) return;
 
     this.authService.requestPasswordReset(usernameOrEmail).subscribe({

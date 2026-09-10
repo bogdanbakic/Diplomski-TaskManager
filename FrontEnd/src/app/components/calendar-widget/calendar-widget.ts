@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { TaskItem } from '../../models/task-item.model';
 
 interface CalendarDay {
   date: number;
   isCurrentMonth: boolean;
   isToday: boolean;
+  hasTask: boolean;
   fullDate: Date;
 }
 
@@ -21,6 +23,7 @@ interface CalendarDay {
 })
 export class CalendarWidget implements OnInit, OnDestroy {
   now = signal(new Date());
+  tasks = input<TaskItem[]>([]);
   viewDate = signal(new Date());
   isExpanded = signal(false);
   private intervalId: any;
@@ -34,6 +37,16 @@ export class CalendarWidget implements OnInit, OnDestroy {
   compactLabel = computed(() => {
     return this.now().toLocaleDateString('sr-Latn', { weekday: 'short', day: '2-digit', month: 'short' });
   });
+
+  private hasTaskOnDate(date: Date): boolean {
+    const list = this.tasks();
+    return list.some(t => {
+      const end = new Date(t.endDate);
+      return end.getFullYear() === date.getFullYear()
+        && end.getMonth() === date.getMonth()
+        && end.getDate() === date.getDate();
+    });
+  }
 
   days = computed<CalendarDay[]>(() => {
     const view = this.viewDate();
@@ -51,17 +64,19 @@ export class CalendarWidget implements OnInit, OnDestroy {
 
     for (let i = firstWeekday - 1; i >= 0; i--) {
       const dayNum = daysInPrevMonth - i;
-      result.push({ date: dayNum, isCurrentMonth: false, isToday: false, fullDate: new Date(year, month - 1, dayNum) });
+      const fullDate = new Date(year, month - 1, dayNum);
+      result.push({ date: dayNum, isCurrentMonth: false, isToday: false, hasTask: this.hasTaskOnDate(fullDate), fullDate });
     }
 
     for (let d = 1; d <= daysInMonth; d++) {
       const fullDate = new Date(year, month, d);
-      result.push({ date: d, isCurrentMonth: true, isToday: fullDate.toDateString() === today.toDateString(), fullDate });
+      result.push({ date: d, isCurrentMonth: true, isToday: fullDate.toDateString() === today.toDateString(), hasTask: this.hasTaskOnDate(fullDate), fullDate });
     }
 
     while (result.length < 42) {
       const nextDay = result.length - (firstWeekday + daysInMonth) + 1;
-      result.push({ date: nextDay, isCurrentMonth: false, isToday: false, fullDate: new Date(year, month + 1, nextDay) });
+      const fullDate = new Date(year, month + 1, nextDay);
+      result.push({ date: nextDay, isCurrentMonth: false, isToday: false, hasTask: this.hasTaskOnDate(fullDate), fullDate });
     }
 
     return result;

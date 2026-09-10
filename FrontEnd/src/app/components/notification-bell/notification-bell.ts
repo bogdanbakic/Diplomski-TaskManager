@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './notification-bell.scss',
 })
 export class NotificationBell implements OnInit {
-  private readonly notificationApiService = inject(NotificationApiService);
+  protected readonly notificationApiService = inject(NotificationApiService);
 
   notifications = this.notificationApiService.notifications;
   unreadCount = this.notificationApiService.unreadCount;
