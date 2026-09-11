@@ -38,5 +38,20 @@ namespace TaskManager.Infrastructure.Repositories
             _context.Update(notification);
             await _context.SaveChangesAsync();
         }
+        public async Task DeleteAsync(Notification notification)
+        {
+            _context.Notifications.Remove(notification);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAllForUserAsync(string userId)
+        {
+            var notifications = await _context.Notifications
+                .Where(n => n.UserId == userId)
+                .ToListAsync();
+
+            _context.Notifications.RemoveRange(notifications);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace TaskManager.Application.Services.IServices
         Task MarkAsReadAsync(int id, string userId);
         Task CreateAssignmentNotificationAsync(string assignedToUserId, string assignedByUserId, string taskName, int taskId);
         Task CreatePasswordResetRequestAsync(string requestingUserId, string requestingUserName);
+        Task DeleteNotificationAsync(int id, string userId);
+        Task DeleteAllForUserAsync(string userId);
     }
 }

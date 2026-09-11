@@ -62,5 +62,17 @@ namespace TaskManager.Application.Services
                 await _repository.AddAsync(notification);
             }
         }
+        public async Task DeleteNotificationAsync(int id, string userId)
+        {
+            var notification = await _repository.GetByIdAsync(id);
+            if (notification == null || notification.UserId != userId) return;
+
+            await _repository.DeleteAsync(notification);
+        }
+
+        public async Task DeleteAllForUserAsync(string userId)
+        {
+            await _repository.DeleteAllForUserAsync(userId);
+        }
     }
 }

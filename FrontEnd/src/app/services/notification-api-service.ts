@@ -42,4 +42,21 @@ export class NotificationApiService {
       error: (err) => console.error('Error marking notification as read: ', err)
     });
   }
+  deleteNotification(id: number): void {
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      next: () => {
+        this.notificationsSignal.update(list => list.filter(n => n.id !== id));
+      },
+      error: (err) => console.error('Error deleting notification: ', err)
+    });
+  }
+
+  clearAll(): void {
+    this.http.delete(this.apiUrl).subscribe({
+      next: () => {
+        this.notificationsSignal.set([]);
+      },
+      error: (err) => console.error('Error clearing notifications: ', err)
+    });
+  }
 }

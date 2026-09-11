@@ -4,17 +4,26 @@
   </mat-icon>
 </button>
 
-<mat-menu #menu="matMenu" (menuOpened)="notificationApiService.refresh()">
+<mat-menu #menu="matMenu">
   @if (notifications().length === 0) {
-  <div class="empty-state">No notifications</div>
+  <div class="empty-state">Nema notifikacija</div>
   } @else {
-  @for (n of notifications(); track n.id) {
-  <button mat-menu-item (click)="onNotificationClick(n.id)" [class.unread]="!n.isRead">
-    <div class="notification-item">
-      <span>{{ n.message }}</span>
-      <span class="notification-date">{{ n.createdAt | date: 'short' }}</span>
+  <div class="notification-list">
+    @for (n of notifications(); track n.id) {
+    <div class="notification-item" [class.unread]="!n.isRead" (click)="onNotificationClick(n.id)">
+      <div class="notification-text">
+        <span>{{ n.message }}</span>
+        <span class="notification-date">{{ n.createdAt | date: 'short' }}</span>
+      </div>
+      <button mat-icon-button class="delete-btn" [matTooltip]="'Obriši'" (click)="onDelete($event, n.id)">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
+    }
+  </div>
+  <button mat-menu-item class="clear-all-btn" (click)="onClearAll()">
+    <mat-icon>delete_sweep</mat-icon>
+    <span>Očisti notifikacije</span>
   </button>
-  }
   }
 </mat-menu>

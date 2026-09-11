@@ -28,4 +28,12 @@ export class NotificationBell implements OnInit {
   onNotificationClick(id: number) {
     this.notificationApiService.markAsRead(id);
   }
+  onDelete(event: Event, id: number) {
+    event.stopPropagation();
+    this.notificationApiService.deleteNotification(id);
+  }
+
+  onClearAll() {
+    this.notificationApiService.clearAll();
+  }
 }
