@@ -33,7 +33,7 @@ namespace TaskManager.Application.Services
 
         public async Task CreateAssignmentNotificationAsync(string assignedToUserId, string assignedByUserId, string taskName, int taskId)
         {
-            if (assignedToUserId == assignedByUserId) return; // ne obaveštavaj sam sebe
+            if (assignedToUserId == assignedByUserId) return; 
 
             var sender = await _userService.GetByIdAsync(assignedByUserId);
             var senderName = sender?.FullName ?? "Neko";

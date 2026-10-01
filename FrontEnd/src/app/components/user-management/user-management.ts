@@ -47,10 +47,10 @@ export class UserManagement {
   onRoleChange(userId: string, newRole: string) {
     this.userService.updateRole(userId, newRole).subscribe({
       next: () => {
-        this.notificationService.success('Role updated successfully!');
+        this.notificationService.success('Uloga uspešno ažurirana!');
         this.usersResource.reload();
       },
-      error: () => this.notificationService.error('Failed to update role.')
+      error: () => this.notificationService.error('Neuspešno ažuriranje uloge.')
     });
   }
 

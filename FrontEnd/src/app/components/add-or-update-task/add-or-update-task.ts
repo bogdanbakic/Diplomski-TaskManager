@@ -38,7 +38,7 @@ export class AddOrUpdateTask {
   private dialogRef = inject(MatDialogRef<AddOrUpdateTask>, { optional: true });
   private readonly notificationService = inject(NotificationService);
   private readonly fb = inject(FormBuilder);
-  readonly dialogTitle = computed(() => this.data?.id ? `Editovanje zadatka: ${this.data.name}` : 'Kreiranje novog zadatka');
+  readonly dialogTitle = computed(() => this.data?.id ? `Izmena zadatka: ${this.data.name}` : 'Kreiranje novog zadatka');
 
   data = inject(MAT_DIALOG_DATA, { optional: true });
   minDate: Date | null = new Date();
@@ -106,11 +106,11 @@ export class AddOrUpdateTask {
 
     request$.subscribe({
       next: (response) => {
-        this.notificationService.success(`${this.data?.id ? 'Ažuriran' : 'Kreiran'} zadatak uspešno!`);
+        this.notificationService.success(`${this.data?.id ? 'Izmenjen' : 'Kreiran'} zadatak uspešno!`);
         this.dialogRef?.close(response);
       },
       error: (error) => {
-        this.notificationService.error(`Došlo je do greške prilikom ${this.data?.id ? 'ažuriranja' : 'kreiranja'} zadatka!`);
+        this.notificationService.error(`Došlo je do greške prilikom ${this.data?.id ? 'izmene' : 'kreiranja'} zadatka!`);
       }
     });
   }

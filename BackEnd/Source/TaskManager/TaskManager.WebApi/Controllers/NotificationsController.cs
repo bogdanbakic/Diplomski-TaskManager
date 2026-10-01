@@ -32,6 +32,7 @@ namespace TaskManager.WebApi.Controllers
             await _notificationService.MarkAsReadAsync(id, CurrentUserId);
             return Ok();
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

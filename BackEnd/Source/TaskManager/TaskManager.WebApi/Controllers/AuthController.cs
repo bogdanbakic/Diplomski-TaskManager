@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     {
         var result = await _authService.RegisterAsync(dto);
         if (!result.Success) return BadRequest(result.Errors);
-        return Ok(new { message = "User registered successfully." });
+        return Ok(new { message = "Korisnik uspešno registrovan." });
     }
 
     [HttpPost("login")]
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> AdminResetPassword([FromServices] UserManager<ApplicationUser> userManager, [FromBody] ResetPasswordDto dto)
     {
         var user = await userManager.FindByIdAsync(dto.UserId);
-        if (user == null) return NotFound("User not found.");
+        if (user == null) return NotFound("Korisnik nije pronađen.");
 
         await userManager.RemovePasswordAsync(user);
         var result = await userManager.AddPasswordAsync(user, dto.NewPassword);
@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(result.Errors.Select(e => e.Description));
 
-        return Ok(new { message = "Password reset successfully." });
+        return Ok(new { message = "Lozinka uspešno resetovana." });
     }
     [HttpPost("request-password-reset")]
     public async Task<IActionResult> RequestPasswordReset(
